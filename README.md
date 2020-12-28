@@ -1,7 +1,7 @@
 order
 ==========
 
-[![Hackage](https://img.shields.io/hackage/v/order.svg)](https://hackage.haskell.org/package/order) ![Build Status](https://github.com/emilypi/order/workflows/ci/badge.svg)
+[![Hackage](https://img.shields.io/hackage/v/order.svg)](https://hackage.haskell.org/package/order) ![Build Status](https://github.com/emilypi/order/workflows/haskell-ci/badge.svg)
 
 This is a package for exploring order-theory in Haskell.
 
