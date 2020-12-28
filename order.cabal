@@ -27,7 +27,7 @@ source-repository head
 
 custom-setup
   setup-depends:
-      base           >=4.11 && <5
+      base           >=4.10 && <5
     , Cabal
     , cabal-doctest
 
