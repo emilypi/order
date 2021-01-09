@@ -1,4 +1,4 @@
-module Order.Pre where
+module Data.Order.Pre where
 
 -- | A preorder is an ordering that is reflexive and transitive, but not
 -- necessarily antisymmetric.

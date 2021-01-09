@@ -1,5 +1,5 @@
 module Data.Semilattice where
-import Order.Partial
+import Data.Order.Partial
 
 -- | A join-semilattice. An associative idempotent commutative operator called `join` with
 -- The `<=` operator from the partial order witnesses that join is
