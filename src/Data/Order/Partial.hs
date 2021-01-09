@@ -1,5 +1,5 @@
-module Order.Partial where
-import Order.Pre
+module Data.Order.Partial where
+import Data.Order.Pre
 
 -- | Adds a law to a preorder where we must have antisymmetry.
 -- Law: forall a b. (a <= b) => !(b <= a)

@@ -1,6 +1,6 @@
 {-# LANGUAGE TypeFamilies #-}
-module Order.Complete where
-import Order.Partial
+module Data.Order.Complete where
+import Data.Order.Partial
 
 -- | Davey and Priestly, 2nd edition, Definition 7.7: Directed set:
 -- let S be a non-empty subset of an ordered set P.

@@ -1,5 +1,5 @@
-module Data.Heyting where
-import Data.Lattice
+module Data.Order.Heyting where
+import Data.Order.Lattice
 
 -- | A bounded lattice equipped with an implication operation that behaves
 -- akin to implication in classical logic: 
