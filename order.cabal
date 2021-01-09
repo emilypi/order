@@ -49,6 +49,7 @@ library
     Order.Eq.Partial
     Order.Linear
     Order.Partial
+    Order.Complete
     Order.Pre
     Order.Quasi
     Order.Total
