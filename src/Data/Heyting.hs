@@ -19,5 +19,5 @@ import Data.Lattice
 --
 -- 4. Distributivity of `=>` over `meet`: 
 --   a `imply` (b `meet` c) = (a `imply` b) `meet` (a `imply` c) 
-class BoundedLattice a => Heytig a where
+class BoundedLattice a => Heyting a where
   imply :: a -> a -> a
