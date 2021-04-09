@@ -1,32 +1,90 @@
-module Data.Semilattice where
+module Data.Semilattice
+( -- * Join semilattices
+  Join(..)
+, (\/)
+, (∨)
+  -- ** Bounded join semilattices
+, BoundedJoin(..)
+, bottom
+, (⊥)
+  -- * Meet semilattices
+, Meet(..)
+, (/\)
+, (∧)
+  -- ** Bounded meet semilattices
+, BoundedMeet(..)
+, top
+, (⊤)
+) where
 
 import Data.Order.Bounded
 import Data.Order.Partial
 import Data.Void
 
--- | A join-semilattice. An associative idempotent commutative operator called `join` with
--- The `<=` operator from the partial order witnesses that join is
--- non-decreasing:
+-- -------------------------------------------------------------------- --
+-- Join Semilattices
+
+-- | A join-semilattice is a 'Poset' with an associative, idempotent, and
+-- commutative binary operation called @join@.
 --
--- [Associative] @∀ a b c. a ∨ (b ∨ c) = (a ∨ b) ∨ c@
--- [Idempotent] @∀ a. a ∨ a = a@
--- [Commutative] @∀ a b. a ∨ b = b ∨ a@
--- [Non-decreasing] @{Poset p} => ∀ a b. a <= a ∨ b@
+-- Laws:
 --
--- Alternatively, one can view a join semilattice as a commutative 'Band' with
--- respect to its 'join' operation.
+-- [Associative] @a '∨' (b '∨' c) = (a '∨' b) '∨' c@
+-- [Idempotent] @a '∨' a = a@
+-- [Commutative] @a '∨' b = b '∨' a@
+-- [Non-decreasing] @a <= a '∨' b@
+--
+-- Alternatively, one can view a join semilattice as a commutative
+-- 'Band' with respect to its 'join' operation.
 --
 class PartialOrd a => Join a where
   join :: a -> a -> a
 
--- | A meet-semilattice. An associative idempotent commutative operator called `meet` with
--- The `>=` operator from the partial order witnesses that meet is
--- non-increasing:
+-- | A infix alias for 'join'
 --
--- [Associative] @∀ a b c. a ∧ (b ∧ c) = (a ∧ b) ∧ c@
--- [Idempotent] @∀ a. a ∧ a = a@
--- [Commutative] @∀ a b. a ∧ b = b ∧ a@
--- [Non-increasing] @{Poset p} => ∀ a b. a >= a ∧ b@
+(\/) :: Join a => a -> a -> a
+(\/) = join
+infixr 6 \/
+
+-- | An infix unicode alias for 'join'
+--
+(∨) :: Join a => a -> a -> a
+(∨) = join
+infixr 6 ∨
+
+-- | A bounded join-semilattice is a join-semilattice that is bounded,
+-- meaning that it admits a greatest lower bound (also known as a
+-- bottom element, infimum), which is a unit for the 'join' operation.
+--
+-- Laws:
+--
+-- [Two-sided unital element] @a '∨' '⊥' = '⊥' '∨' a = a@
+--
+class (Infimum a, Join a) => BoundedJoin a where
+
+-- | An alias for the bottom element of a 'BoundedJoin' semilattice.
+--
+bottom :: BoundedJoin a => a
+bottom = inf
+
+-- | A unicode alias for the bottom element of a
+-- 'BoundedJoin' semilattice.
+--
+(⊥) :: BoundedJoin a => a
+(⊥) = bottom
+
+-- -------------------------------------------------------------------- --
+-- Meet Semilattices
+
+-- | A meet-semilattice is a 'Poset' with an associative, idempotent, and
+-- commutative operator called @meet@.
+--
+-- Laws:
+--
+-- [Associative] @a '∧' (b '∧' c) = (a '∧' b) '∧' c@
+-- [Idempotent] @a '∧' a = a@
+-- [Commutative] @a '∧' b = b '∧' a@
+-- [Non-increasing] @a '∧' b '<=' a@
 --
 -- Alternatively, one can view a meet semilattice as a commutative 'Band' with
 -- respect to its 'meet' operation.
@@ -34,26 +92,38 @@ class PartialOrd a => Join a where
 class PartialOrd a => Meet a where
   meet :: a -> a -> a
 
--- @topos: I based these fixities off the boolean operations they relate to for bools in the Haskell report, thoughts?
-infixr 2 \/
-(\/), (∨) :: Join a => a -> a -> a
-(\/) = join
-(∨) = join
-
-infixr 3 /\
-(/\),(∧) :: Meet a => a -> a -> a
+-- | A infix alias for 'meet'
+--
+(/\)  :: Meet a => a -> a -> a
 (/\) = meet
+infixr 7 /\
+
+-- | A unicode infix alias for 'meet'
+--
+(∧) :: Meet a => a -> a -> a
 (∧) = meet
+infixr 7 ∧
 
-class (Infimum a, Join a) => BoundedJoin a where
-
-bottom :: BoundedJoin a => a
-bottom = inf
-
+-- | A bounded meet-semilattice is a meet-semilattice that is bounded,
+-- meaning that it admits a least upper bound (also known as a
+-- top element, supremum), which is a unit for the 'meet' operation.
+--
+-- Laws:
+--
+-- [Two-sided unital element] @a '∧' '⊤' = '⊤' '∧' a = a@
+--
 class (Supremum a, Meet a) => BoundedMeet a where
 
+-- | An alias for the top element of a 'BoundedMeet' semilattice.
+--
 top :: BoundedMeet a => a
 top = sup
+
+-- | A unicode alias for the top element of a 'BoundedMeet'
+-- semilattice.
+--
+(⊤) :: BoundedMeet a => a
+(⊤) = top
 
 instance Join Void where
   join = const
