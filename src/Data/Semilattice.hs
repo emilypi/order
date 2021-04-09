@@ -32,6 +32,7 @@ module Data.Semilattice
 , (⊤)
 ) where
 
+
 import Data.Order.Bounded
 import Data.Order.Partial
 import Data.Void

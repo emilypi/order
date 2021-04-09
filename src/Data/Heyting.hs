@@ -1,23 +1,68 @@
-module Data.Heyting where
+{-# language Safe #-}
+-- |
+-- Module       : Data.Lattice
+-- Copyright    : (c) 2020-2021 Emily Pillmore, Davean Scies
+-- License      : BSD-style
+--
+-- Maintainer   : Emily Pillmore <emilypi@cohomolo.gy>,
+--                Davean Scies <davean@xkcd.com>,
+--                Siddharth Bhat <siddu.druid@gmail.com>
+-- Stability    : stable
+-- Portability  : non-portable
+--
+-- This module contains definitions for 'Heyting' algebras and their
+-- associated combinators.
+--
+module Data.Heyting
+( -- * Heyting algebras
+  Heyting(..)
+, (→)
+, not
+, (¬)
+, const
+) where
+
+import qualified Prelude as P
+
 import Data.Lattice
+import Data.Semilattice
 
--- | A bounded lattice equipped with an implication operation that behaves
--- akin to implication in classical logic: 
---   `a => b = not a || b`.
--- However, since we are defining these over an arbitrary bounded lattice and not
--- a boolean algebra, we do not have access to  the `not` operation. Hence,
--- we axiomatize implication with the following laws:
+-- | A @Heyting@ algebra is a 'BoundedLattice' such that for every
+-- pair of elements in the algebra, there exists a unique greatest element
+-- @x@ such that @a ∧ x <= b@ holds. We call @x@ the /relative psuedo-complement/
+-- of @a@ with respect to @b@, and it is denoted @a '→' b@.
 --
--- 1. Identity function is top:
---    a `imply` a = top 
+-- Generally, we call @('→')@ /implication/, and say that a @Heyting@
+-- algebra is a 'BoundedLattice' for which implication holds.
 --
--- 2. (@topos: what's a good name for this? I think of it as function application)
---    a `meet` (a `imply` b) = a `meet` b 
-
--- 3. (@topos: what's a good name for this? I don't grok this condition)
---   b `meet` (a `imply` b) = b
+-- Implication is the weakest proposition for which /modus ponens/
+-- is valid as an inference rule.
 --
--- 4. Distributivity of `=>` over `meet`: 
---   a `imply` (b `meet` c) = (a `imply` b) `meet` (a `imply` c) 
+-- Laws:
+--
+-- [Relative pseudo-complement] @a ∧ x <= b@
+--
 class BoundedLattice a => Heyting a where
-  imply :: a -> a -> a
+  implies :: a -> a -> a
+  {-# minimal implies #-}
+
+
+-- | A unicode alias for 'implies'
+--
+(→) :: Heyting a => a -> a -> a
+(→) = implies
+infixr 0 →
+
+-- | Negation in a 'Heyting' algebra is an implication @a '→' '⊥'@.
+--
+not :: Heyting a => a -> a
+not a = implies a bottom
+
+-- | A unicode alias for 'not'.
+(¬) :: Heyting a => a -> a
+(¬) = not
+
+-- | The constant morphism from any element to the top element.
+--
+const :: Heyting a => a -> a
+const _ = top
