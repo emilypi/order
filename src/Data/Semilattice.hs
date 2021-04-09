@@ -4,37 +4,33 @@ import Data.Order.Bounded
 import Data.Order.Partial
 import Data.Void
 
--- @topos: "join" clashes with Control.Monad.join but importing as Lattice we get Lattice.join which I like anyway.
--- I think with the aliases this situation is "fine".
--- harmless' choice of the unicode symbols for this have some appeal to avoid the clash but OTOH I don't type
--- unicode without impedence.
-
 -- | A join-semilattice. An associative idempotent commutative operator called `join` with
 -- The `<=` operator from the partial order witnesses that join is
 -- non-decreasing:
 --
--- Associative:
---   forall a b c . a `join` (b `join` c) = (a `join` b) `join` c
--- Idempotent:
---   forall a. a `join` a = a
--- Commutative:
---   forall a b. a `join` b = b `join` a
--- Join is non-decreasing:
--- forall a b. a <= a `join` b
+-- [Associative] @∀ a b c. a ∨ (b ∨ c) = (a ∨ b) ∨ c@
+-- [Idempotent] @∀ a. a ∨ a = a@
+-- [Commutative] @∀ a b. a ∨ b = b ∨ a@
+-- [Non-decreasing] @{Poset a} => ∀ a b. a <= a ∨ b@
+--
+-- Alternatively, one can view a join semilattice as a commutative 'Band' with
+-- respect to its 'join' operation.
+--
 class PartialOrd a => Join a where
   join :: a -> a -> a
 
 -- | A meet-semilattice. An associative idempotent commutative operator called `meet` with
--- The `<=` operator from the partial order
--- witnesses that the meet is non-inceasing.
--- Associative:
---   forall a b c . a `meet` (b `meet` c) = (a `meet` b) `meet` c
--- Idempotent:
---   forall a. a `meet` a = a
--- Commutative:
---   forall a b. a `meet` b = b `meet` a
--- Meet is non-increasing:
--- forall a b. a >= a `meet` b
+-- The `<=` operator from the partial order witnesses that meet is
+-- non-decreasing:
+--
+-- [Associative] @∀ a b c. a ∧ (b ∧ c) = (a ∧ b) ∧ c@
+-- [Idempotent] @∀ a. a ∧ a = a@
+-- [Commutative] @∀ a b. a ∧ b = b ∧ a@
+-- [Non-increasing] @{Poset a} => ∀ a b. a <= a ∧ b@
+--
+-- Alternatively, one can view a meet semilattice as a commutative 'Band' with
+-- respect to its 'meet' operation.
+--
 class PartialOrd a => Meet a where
   meet :: a -> a -> a
 
