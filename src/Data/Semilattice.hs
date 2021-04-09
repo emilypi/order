@@ -1,3 +1,18 @@
+{-# language Safe #-}
+-- |
+-- Module       : Data.Semilattice
+-- Copyright    : (c) 2020-2021 Emily Pillmore, Davean Scies
+-- License      : BSD-style
+--
+-- Maintainer   : Emily Pillmore <emilypi@cohomolo.gy>,
+--                Davean Scies <davean@xkcd.com>,
+--                Siddharth Bhat <siddu.druid@gmail.com>
+-- Stability    : stable
+-- Portability  : non-portable
+--
+-- This module contains definitions for 'Join' and 'Meet' semilattices,
+-- along with their bounded variants, and associated combinators.
+--
 module Data.Semilattice
 ( -- * Join semilattices
   Join(..)
@@ -38,6 +53,8 @@ import Data.Void
 -- 'Band' with respect to its 'join' operation.
 --
 class PartialOrd a => Join a where
+  -- | The join operation of a join-semilattice.
+  --
   join :: a -> a -> a
 
 -- | A infix alias for 'join'
@@ -90,6 +107,8 @@ bottom = inf
 -- respect to its 'meet' operation.
 --
 class PartialOrd a => Meet a where
+  -- | The meet operation of a meet-semilattice.
+  --
   meet :: a -> a -> a
 
 -- | A infix alias for 'meet'
