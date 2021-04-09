@@ -11,7 +11,7 @@ import Data.Void
 -- [Associative] @∀ a b c. a ∨ (b ∨ c) = (a ∨ b) ∨ c@
 -- [Idempotent] @∀ a. a ∨ a = a@
 -- [Commutative] @∀ a b. a ∨ b = b ∨ a@
--- [Non-decreasing] @{Poset a} => ∀ a b. a <= a ∨ b@
+-- [Non-decreasing] @{Poset p} => ∀ a b. a <= a ∨ b@
 --
 -- Alternatively, one can view a join semilattice as a commutative 'Band' with
 -- respect to its 'join' operation.
@@ -20,13 +20,13 @@ class PartialOrd a => Join a where
   join :: a -> a -> a
 
 -- | A meet-semilattice. An associative idempotent commutative operator called `meet` with
--- The `<=` operator from the partial order witnesses that meet is
--- non-decreasing:
+-- The `>=` operator from the partial order witnesses that meet is
+-- non-increasing:
 --
 -- [Associative] @∀ a b c. a ∧ (b ∧ c) = (a ∧ b) ∧ c@
 -- [Idempotent] @∀ a. a ∧ a = a@
 -- [Commutative] @∀ a b. a ∧ b = b ∧ a@
--- [Non-increasing] @{Poset a} => ∀ a b. a <= a ∧ b@
+-- [Non-increasing] @{Poset p} => ∀ a b. a >= a ∧ b@
 --
 -- Alternatively, one can view a meet semilattice as a commutative 'Band' with
 -- respect to its 'meet' operation.
