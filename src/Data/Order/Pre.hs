@@ -9,16 +9,31 @@
 {-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE TypeOperators #-}
-module Data.Order.Pre where
+{-# LANGUAGE Trustworthy #-}
+module Data.Order.Pre
+( -- * Preorders
+  PreOrd(..)
+, geq
+, (>=)
+, (≧)
+, (<=)
+, (≦)
+  -- * Lifted classes
+, PreOrd1(..)
+) where
 
--- We might need to CPP out a lot of these instances (the C/OS related ones specificly).
+-- We might need to CPP out a lot of these instances (the C/OS related ones specifically).
 
--- Some of these instances need to move to POSet because we have Eq reqirements
--- Maybe this means ParOrd1 is actually only POSet1?
+-- Some of these instances need to move to Poset because we have Eq reqirements
+-- Maybe this means ParOrd1 is actually only Poset1?
+
+import           Prelude hiding ((<=), (>=))
+import qualified Prelude as P
 
 import           Control.Applicative
 import           Control.Concurrent
 import           Control.Exception
+
 import           Data.Array
 import           Data.Char
 import           Data.Fixed
@@ -34,7 +49,8 @@ import qualified Data.IntSet as IntSet
 import           Data.List.NonEmpty (NonEmpty((:|)))
 import qualified Data.Map as Map
 import qualified Data.Monoid as Monoid
-import           Data.Ord
+import           Data.Ord (Down(..))
+import qualified Data.Ord as Ord
 import           Data.Proxy
 import           Data.Ratio
 import           Data.Semigroup
@@ -45,30 +61,79 @@ import           Data.Unique
 import           Data.Version
 import           Data.Void
 import           Data.Word
+
 import           Foreign.C.Types
 import           Foreign.ForeignPtr
 import           Foreign.Ptr
+
 import           GHC.ByteOrder
 import           GHC.Conc
+import           GHC.Event
 import           GHC.Fingerprint.Type
 import           GHC.Generics
 import           GHC.TypeLits
+
 import           Numeric.Natural
+
 import           System.Exit
 import           System.IO
 import           System.Posix.Types
+
 import           Type.Reflection
 
--- | A preorder is an ordering that is reflexive and transitive, but not
--- necessarily antisymmetric.
--- reflexivity:
---   forall a. a <= a
--- transitivity: 
---   forall a b c. (a <= b && b <= c) => (a <= c)
+
+#include "HsBaseConfig.h"
+
+
+-- | A preordered set (aka a /proset/) is a set with an ordering
+-- that is reflexive and transitive.
+--
+-- Laws:
+--
+-- [Reflexivity] @a '<=' a@
+-- [Transitivity] @a '<=' b and b '<=' c implies a '<=' c
+--
+-- These conditions are necessary and sufficient to define a thin category
+-- where reflexivity is the identity morphism, and between pairs
+-- of elements, there is a single morphism.
+--
+-- Pre-orders differ from partial orders in that a pre-orders do not
+-- necessarily have to be anti-symmetric: that is,
+-- @a '<=' b and b '<=' a@ does not necessarily imply that @a '==' b@.
+--
 class PreOrd a where
   leq ::  a -> a -> Bool
   default leq :: Ord a => a -> a -> Bool
-  leq = (<=)
+  leq = (Ord.<=)
+
+-- | Alias for flipped 'leq'.
+--
+geq :: PreOrd a => a -> a -> Bool
+geq = flip leq
+
+-- | Infix operator alias for 'leq'.
+--
+(<=) :: PreOrd a => a -> a -> Bool
+(<=) = leq
+infix 4 <=
+
+-- | Unicode infix alias for 'leq'.
+--
+(≦) :: PreOrd a => a -> a -> Bool
+(≦) = leq
+infix 4 ≦
+
+-- | Infix operator alias for 'leq'.
+--
+(>=) :: PreOrd a => a -> a -> Bool
+(>=) = geq
+infix 4 >=
+
+-- | Infix operator alias for 'leq'.
+--
+(≧) :: PreOrd a => a -> a -> Bool
+(≧) = geq
+infix 4 ≧
 
 data LEQ
  = PEQ
@@ -191,7 +256,7 @@ instance PreOrd ErrorCall
 instance PreOrd ArrayException
 instance PreOrd AsyncException
 
-#if (MIN_VERSION_base(4,14,0))
+#if (MIN_VERSION_base(4,15,0))
 instance PreOrd TimeoutKey
 #endif
 
@@ -208,7 +273,10 @@ instance PreOrd CNfds
 instance PreOrd CSocklen
 #endif
 
+#if defined(HTYPE_TIMER_T)
 instance PreOrd CTimer
+#endif
+
 instance PreOrd CKey
 instance PreOrd CId
 instance PreOrd CFsFilCnt
@@ -341,7 +409,7 @@ instance (Eq v, PreOrd v) => PreOrd (IntMap.IntMap v) where
 
 instance PreOrd1 (Map.Map k) where
   liftLEQ cmp m n = liftLEQ cmp (toList m) (toList n)
-  
+
 instance (PreOrd k, Eq v, PreOrd v) => PreOrd (Map.Map k v) where
   leq m1 m2 = leq (toList m1) (toList m2)
 
@@ -478,7 +546,7 @@ instance (Eq a, PreOrd a) => PreOrd1 ((,) a) where
     then cmp b1 b2
     else leqLEQ a1 a2
 
-instance PreOrd1 (Proxy) where
+instance PreOrd1 Proxy where
   liftLEQ _ _ _ = PEQ
 
 instance (PreOrd1 f, PreOrd1 g) => PreOrd1 (Functor.Sum f g) where
