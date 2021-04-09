@@ -535,7 +535,7 @@ instance PreOrd1 NonEmpty where
   liftLEQ cmp (x :| xs) (y :| ys) = cmp x y <> liftLEQ cmp xs ys
 
 instance PreOrd1 Down where
-  liftLEQ cmp (Down x) (Down y) = cmp x y
+  liftLEQ cmp (Down x) (Down y) = cmp y x
 
 instance PreOrd1 Functor.Identity where
   liftLEQ cmp (Functor.Identity x) (Functor.Identity y) = cmp x y
