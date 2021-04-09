@@ -45,14 +45,14 @@ library
     Data.Lattice.Distributive
     Data.Lattice.Modular
     Data.Semilattice
-    Order.Direction
-    Order.Eq.Partial
-    Order.Linear
-    Order.Partial
-    Order.Pre
-    Order.Quasi
-    Order.Total
-    Order.Well
+    Data.Order.Direction
+    Data.Order.Linear
+    Data.Order.Partial
+    Data.Order.Complete
+    Data.Order.Pre
+    Data.Order.Quasi
+    Data.Order.Total
+    Data.Order.Well
 
   -- other-modules:
   -- other-extensions:
