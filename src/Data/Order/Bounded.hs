@@ -33,6 +33,7 @@ import           Control.Monad.ST
 import qualified Data.Functor.Contravariant as Functor
 import qualified Data.Functor.Identity as Functor
 import           Data.Function (fix)
+import           Data.Int
 import qualified Data.IntMap as IntMap
 import qualified Data.IntSet as IntSet
 import qualified Data.Map as Map
@@ -42,6 +43,7 @@ import           Data.Proxy
 import           Data.Semigroup
 import qualified Data.Set as Set
 import           Data.Void
+import           Data.Word
 
 import           GHC.Generics
 
@@ -214,3 +216,50 @@ instance Ord k => Infimum (Map.Map k v)
 
 instance Infimum Natural where
   inf = 0
+
+instance Infimum Char where
+  inf = minBound
+instance Supremum Char where
+  sup = maxBound
+
+instance Infimum Int where
+  inf = minBound
+instance Supremum Int where
+  sup = maxBound
+instance Infimum Int8 where
+  inf = minBound
+instance Supremum Int8 where
+  sup = maxBound
+instance Infimum Int16 where
+  inf = minBound
+instance Supremum Int16 where
+  sup = maxBound
+instance Infimum Int32 where
+  inf = minBound
+instance Supremum Int32 where
+  sup = maxBound
+instance Infimum Int64 where
+  inf = minBound
+instance Supremum Int64 where
+  sup = maxBound
+
+instance Infimum Word where
+  inf = minBound
+instance Supremum Word where
+  sup = maxBound
+instance Infimum Word8 where
+  inf = minBound
+instance Supremum Word8 where
+  sup = maxBound
+instance Infimum Word16 where
+  inf = minBound
+instance Supremum Word16 where
+  sup = maxBound
+instance Infimum Word32 where
+  inf = minBound
+instance Supremum Word32 where
+  sup = maxBound
+instance Infimum Word64 where
+  inf = minBound
+instance Supremum Word64 where
+  sup = maxBound
