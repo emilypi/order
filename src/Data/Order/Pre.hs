@@ -22,13 +22,10 @@ module Data.Order.Pre
 , PreOrd1(..)
 ) where
 
--- We might need to CPP out a lot of these instances (the C/OS related ones specifically).
-
 -- Some of these instances need to move to Poset because we have Eq reqirements
 -- Maybe this means ParOrd1 is actually only Poset1?
 
 import           Prelude hiding ((<=), (>=))
-import qualified Prelude as P
 
 import           Control.Applicative
 import           Control.Concurrent
@@ -68,7 +65,6 @@ import           Foreign.Ptr
 
 import           GHC.ByteOrder
 import           GHC.Conc
-import           GHC.Event
 import           GHC.Fingerprint.Type
 import           GHC.Generics
 import           GHC.TypeLits
@@ -80,6 +76,11 @@ import           System.IO
 import           System.Posix.Types
 
 import           Type.Reflection
+
+#if (MIN_VERSION_base(4,15,0))
+import GHC.Event
+import GHC.Tuple
+#endif
 
 
 #include "HsBaseConfig.h"
@@ -305,7 +306,6 @@ instance PreOrd ByteOrder
 
 instance PreOrd Unique
 
--- TODO: Consider this, the Eq seems pretty important. Any better definitions?
 instance (Eq a, PreOrd a) => PreOrd [a] where
   leq [] [] = True
   leq [] (_:_) = True
@@ -338,7 +338,6 @@ deriving newtype instance PreOrd a => PreOrd (Monoid.Last a)
 deriving newtype instance PreOrd a => PreOrd (Monoid.First a)
 deriving newtype instance PreOrd a => PreOrd (Functor.Identity a)
 deriving newtype instance (Eq a, PreOrd a) => PreOrd (ZipList a)
-deriving newtype instance PreOrd a => PreOrd (Option a)
 deriving newtype instance PreOrd m => PreOrd (WrappedMonoid m)
 deriving newtype instance PreOrd a => PreOrd (Last a)
 deriving newtype instance PreOrd a => PreOrd (First a)
@@ -511,8 +510,6 @@ instance (Eq a, PreOrd a, Eq b, PreOrd b, Eq c, PreOrd c, Eq d, PreOrd d, Eq e, 
       True -> leq (b1, c1, d1, e1, f1, g1, h1, i1, j1, k1, l1, m1, n1, o1) (b2, c2, d2, e2, f2, g2, h2, i2, j2, k2, l2, m2, n2, o2)
       False -> leq a1 a2
 
-
--- TODO: Uh, (==)?
 instance PreOrd1 [] where
   liftLEQ _ [] [] = PEQ
   liftLEQ _ [] (_:_) = PLT
@@ -535,7 +532,7 @@ instance PreOrd1 NonEmpty where
   liftLEQ cmp (x :| xs) (y :| ys) = cmp x y <> liftLEQ cmp xs ys
 
 instance PreOrd1 Down where
-  liftLEQ cmp (Down x) (Down y) = cmp y x
+  liftLEQ cmp (Down x) (Down y) = cmp x y
 
 instance PreOrd1 Functor.Identity where
   liftLEQ cmp (Functor.Identity x) (Functor.Identity y) = cmp x y

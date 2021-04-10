@@ -19,7 +19,7 @@ module Data.Semilattice
 , (\/)
 , (∨)
   -- ** Bounded join semilattices
-, BoundedJoin(..)
+, BoundedJoin
 , bottom
 , (⊥)
   -- * Meet semilattices
@@ -27,7 +27,7 @@ module Data.Semilattice
 , (/\)
 , (∧)
   -- ** Bounded meet semilattices
-, BoundedMeet(..)
+, BoundedMeet
 , top
 , (⊤)
 ) where
