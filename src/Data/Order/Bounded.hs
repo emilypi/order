@@ -77,8 +77,10 @@ class Supremum a where
   default sup :: Bounded a => a
   sup = maxBound
 
-instance Infimum Ordering
-instance Supremum Ordering
+instance Infimum Ordering where
+  inf = minBound
+instance Supremum Ordering where
+  sup = maxBound
 
 instance Infimum Any
 instance Supremum Any
@@ -88,6 +90,8 @@ instance Supremum All
 
 #if (MIN_VERSION_base(4,15,0))
 instance Infimum Lifetime
+instance Supremum Lifetime where
+  sup = MultiShot
 
 instance Infimum Event
 

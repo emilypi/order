@@ -1,4 +1,6 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE DefaultSignatures #-}
+{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE DeriveFoldable #-}
 {-# LANGUAGE DeriveGeneric #-}
@@ -6,6 +8,7 @@
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE DerivingVia #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE Trustworthy #-}
 -- |
 -- Module       : Data.Semilattice
@@ -49,17 +52,26 @@ import           Control.Monad.Zip
 import           Data.Bits
 import           Data.Data
 import           Data.Functor.Classes
+import qualified Data.Set as Set
+import qualified Data.IntSet as IntSet
 import           Data.Ix
+import           Data.List.NonEmpty (NonEmpty)
+import qualified Data.Map as Map
+import qualified Data.IntMap as IntMap
+import qualified Data.Monoid as Monoid
+import           Data.Ord
 import           Data.Order.Bounded
 import           Data.Order.Pre
 import           Data.Order.Partial
 import           Data.Set
 import           Data.Void
-import qualified Data.Set as Set
-import           Data.IntSet
-import qualified Data.IntSet as IntSet
 import           Foreign.Storable
 import           GHC.Generics
+
+#if (MIN_VERSION_base(4,15,0))
+import GHC.Event
+import GHC.Tuple
+#endif
 
 -- -------------------------------------------------------------------- --
 -- Join Semilattices
@@ -123,9 +135,10 @@ bottom = inf
 --
 newtype Joins a
   = Joins { unJoin :: a }
-  deriving (Read, Show, Eq, Ord, PreOrd, PartialOrd)
+  deriving (Read, Show, Eq, Ord)
+  deriving anyclass (PreOrd, PartialOrd)
   deriving (Functor, Foldable, Traversable)
-  deriving (Floating, Fractional, Num, Real, RealFloat, RealFrac, Ix, FiniteBits, Bits, Storable, Bounded, Enum)
+  deriving newtype (Floating, Fractional, Num, Real, RealFloat, RealFrac, Ix, FiniteBits, Bits, Storable, Bounded, Enum)
   deriving (Generic, Generic1, Data)
 
 instance Join a => Semigroup (Joins a) where
@@ -185,7 +198,7 @@ class Meet a where
 --
 (/\)  :: Meet a => a -> a -> a
 (/\) = meet
-infixr 7 /\
+infixr 7 /\\
 
 -- | A unicode infix alias for 'meet'
 --
@@ -219,9 +232,10 @@ top = sup
 --
 newtype Meets a
   = Meets { unMeet :: a }
-  deriving (Read, Show, Eq, Ord, PreOrd, PartialOrd)
+  deriving (Read, Show, Eq, Ord)
+  deriving anyclass (PreOrd, PartialOrd)
   deriving (Functor, Foldable, Traversable)
-  deriving (Floating, Fractional, Num, Real, RealFloat, RealFrac, Ix, FiniteBits, Bits, Storable, Bounded, Enum)
+  deriving newtype (Floating, Fractional, Num, Real, RealFloat, RealFrac, Ix, FiniteBits, Bits, Storable, Bounded, Enum)
   deriving (Generic, Generic1, Data)
 
 instance Meet a => Semigroup (Meets a) where
@@ -287,6 +301,62 @@ instance Meet Bool where
 
 instance BoundedMeet Bool
 
+instance Join Ordering where
+  join LT a = a
+  join EQ LT = EQ
+  join EQ a = a
+  join GT _ = GT
+instance BoundedJoin Ordering
+instance Meet Ordering where
+  meet GT a = a
+  meet EQ GT = EQ
+  meet EQ a = a
+  meet LT _ = LT
+instance BoundedMeet Ordering
+
+deriving newtype instance Join Monoid.Any
+instance Meet Monoid.Any where
+  meet (Monoid.Any a) (Monoid.Any b) = Monoid.Any (a && b)
+instance BoundedJoin Monoid.Any
+instance BoundedMeet Monoid.Any
+
+deriving newtype instance Join Monoid.All
+instance Meet Monoid.All where
+  meet (Monoid.All a) (Monoid.All b) = Monoid.All (a || b)
+instance BoundedJoin Monoid.All
+instance BoundedMeet Monoid.All
+
+#if (MIN_VERSION_base(4,15,0))
+instance Join Lifetime where
+  join = (<>)
+instance BoundedJoin Lifetime
+instance Meet Lifetime where
+  meet MultiShot MultiShot = MultiShot
+  meet _ _ = OneShot
+instance BoundedMeet Lifetime
+
+instance Join Event where
+  join = (<>)
+instance BoundedJoin Event
+#endif
+
+deriving newtype instance Join a => Join (Par1 a)
+
+instance (Join a, Infimum a) => BoundedJoin (Par1 a)
+
+instance Join (NonEmpty a) where
+  join = (<>)
+
+instance Meet a => Join (Down a) where
+  join (Down a) (Down b) = Down (meet a b)
+
+instance (Meet a, Supremum a) => BoundedJoin (Down a)
+
+instance Join a => Meet (Down a) where
+  meet (Down a) (Down b) = Down (join a b)
+
+instance (Join a, Infimum a) => BoundedMeet (Down a)
+
 instance Ord a => Join (Set a) where
   join = Set.union
 
@@ -295,13 +365,29 @@ instance Ord a => BoundedJoin (Set a)
 instance Ord a => Meet (Set a) where
   meet = Set.intersection
 
-instance Join IntSet where
+instance Join IntSet.IntSet where
   join = IntSet.union
 
-instance BoundedJoin IntSet
+instance BoundedJoin IntSet.IntSet
 
-instance Meet IntSet where
+instance Meet IntSet.IntSet where
   meet = IntSet.intersection
+
+instance Join v => Join (IntMap.IntMap v) where
+  join = IntMap.unionWith join
+
+instance Join v => BoundedJoin (IntMap.IntMap v)
+
+instance Meet v => Meet (IntMap.IntMap v) where
+  meet = IntMap.intersectionWith meet
+
+instance (Ord k, Join v) => Join (Map.Map k v) where
+  join = Map.unionWith join
+
+instance (Ord k, Join v) => BoundedJoin (Map.Map k v)
+
+instance (Ord k, Meet v) => Meet (Map.Map k v) where
+  meet = Map.intersectionWith meet
 
 instance Join a => Join (Maybe a) where
   join = liftA2 join
@@ -313,10 +399,37 @@ instance Meet a => Meet (Maybe a) where
 
 instance BoundedMeet a => BoundedMeet (Maybe a)
 
+instance (Join a) => Join (Solo a) where
+  join (Solo a1) (Solo a2) = Solo (join a1 a2)
+
+instance (Meet a) => Meet (Solo a) where
+  meet (Solo a1) (Solo a2) = Solo (meet a1 a2)
+
 instance (Join a, Join b) => Join (a,b) where
-  join (a,b) (c,d) = (join a c, join b d)
+  join (a1,b1) (a2,b2) = (join a1 a2, join b1 b2)
 
 instance (Meet a, Meet b) => Meet (a,b) where
-  meet (a,b) (c,d) = (meet a c, meet b d)
+  meet (a1,b1) (a2,b2) = (meet a1 a2, meet b1 b2)
+
+instance (Join a, Join b, Join c) => Join (a,b,c) where
+  join (a1,b1,c1) (a2,b2,c2) = (join a1 a2, join b1 b2, join c1 c2)
+
+instance (Meet a, Meet b, Meet c) => Meet (a,b,c) where
+  meet (a1,b1,c1) (a2,b2,c2) = (meet a1 a2, meet b1 b2, meet c1 c2)
+
+instance (Join a, Join b, Join c, Join d) => Join (a,b,c,d) where
+  join (a1,b1,c1,d1) (a2,b2,c2,d2) = (join a1 a2, join b1 b2, join c1 c2, join d1 d2)
+
+instance (Meet a, Meet b, Meet c, Meet d) => Meet (a,b,c,d) where
+  meet (a1,b1,c1,d1) (a2,b2,c2,d2) = (meet a1 a2, meet b1 b2, meet c1 c2, meet d1 d2)
+
+instance (Join a, Join b, Join c, Join d, Join e) => Join (a,b,c,d,e) where
+  join (a1,b1,c1,d1,e1) (a2,b2,c2,d2,e2) = (join a1 a2, join b1 b2, join c1 c2, join d1 d2, join e1 e2)
+
+instance (Meet a, Meet b, Meet c, Meet d, Meet e) => Meet (a,b,c,d,e) where
+  meet (a1,b1,c1,d1,e1) (a2,b2,c2,d2,e2) = (meet a1 a2, meet b1 b2, meet c1 c2, meet d1 d2, meet e1 e2)
 
 instance (BoundedMeet a, BoundedMeet b) => BoundedMeet (a,b)
+instance (BoundedMeet a, BoundedMeet b, BoundedMeet c) => BoundedMeet (a,b,c)
+instance (BoundedMeet a, BoundedMeet b, BoundedMeet c, BoundedMeet d) => BoundedMeet (a,b,c,d)
+instance (BoundedMeet a, BoundedMeet b, BoundedMeet c, BoundedMeet d, BoundedMeet e) => BoundedMeet (a,b,c,d,e)
