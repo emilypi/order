@@ -22,9 +22,6 @@ module Data.Order.Pre
 , PreOrd1(..)
 ) where
 
--- Some of these instances need to move to Poset because we have Eq reqirements
--- Maybe this means ParOrd1 is actually only Poset1?
-
 import           Prelude hiding ((<=), (>=))
 
 import           Control.Applicative
@@ -551,6 +548,8 @@ instance PreOrd1 Maybe where
 
 
 #if (MIN_VERSION_base(4,15,0))
+instance PreOrd a => PreOrd (Solo a) where
+  leq (Solo a) (Solo b) = leq a b
 instance PreOrd1 Solo where
   liftLeq cmp (Solo a) (Solo b) = cmp a b
 #endif
