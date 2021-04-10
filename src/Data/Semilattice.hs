@@ -16,6 +16,7 @@
 module Data.Semilattice
 ( -- * Join semilattices
   Join(..)
+, Joins(..)
 , (\/)
 , (∨)
   -- ** Bounded join semilattices
@@ -24,6 +25,7 @@ module Data.Semilattice
 , (⊥)
   -- * Meet semilattices
 , Meet(..)
+, Meets(..)
 , (/\)
 , (∧)
   -- ** Bounded meet semilattices
@@ -36,6 +38,11 @@ module Data.Semilattice
 import Data.Order.Bounded
 import Data.Order.Partial
 import Data.Void
+import Data.Set
+import qualified Data.Set as Set
+import Data.IntSet
+import Control.Applicative
+import qualified Data.IntSet as IntSet
 
 -- -------------------------------------------------------------------- --
 -- Join Semilattices
@@ -57,6 +64,7 @@ class PartialOrd a => Join a where
   -- | The join operation of a join-semilattice.
   --
   join :: a -> a -> a
+  {-# minimal join #-}
 
 -- | A infix alias for 'join'
 --
@@ -70,6 +78,28 @@ infixr 6 \/
 (∨) = join
 infixr 6 ∨
 
+
+instance Join Void where
+  join = const
+
+instance Join () where
+  join _ _ = ()
+
+instance Join Bool where
+  join = (||)
+
+instance (Join a, Join b) => Join (a,b) where
+  join (a,b) (c,d) = (join a c, join b d)
+
+instance Ord a => Join (Set a) where
+  join = Set.union
+
+instance Join IntSet where
+  join = IntSet.union
+
+instance Join a => Join (Maybe a) where
+  join = liftA2 join
+
 -- | A bounded join-semilattice is a join-semilattice that is bounded,
 -- meaning that it admits a greatest lower bound (also known as a
 -- bottom element, infimum), which is a unit for the 'join' operation.
@@ -79,6 +109,12 @@ infixr 6 ∨
 -- [Two-sided unital element] @a '∨' '⊥' = '⊥' '∨' a = a@
 --
 class (Infimum a, Join a) => BoundedJoin a where
+
+instance BoundedJoin ()
+instance BoundedJoin Void
+instance Ord a => BoundedJoin (Set a)
+instance BoundedJoin IntSet
+instance Join a => BoundedJoin (Maybe a)
 
 -- | An alias for the bottom element of a 'BoundedJoin' semilattice.
 --
@@ -90,6 +126,17 @@ bottom = inf
 --
 (⊥) :: BoundedJoin a => a
 (⊥) = bottom
+
+-- | Newtype wrapper yielding the underlying 'Semigroup'
+-- and 'Monoid' instances for instances of 'Join'.
+--
+newtype Joins a = Joins { unJoin :: a }
+
+instance Join a => Semigroup (Joins a) where
+  Joins a <> Joins b = Joins (a \/ b)
+
+instance BoundedJoin a => Monoid (Joins a) where
+  mempty = Joins bottom
 
 -- -------------------------------------------------------------------- --
 -- Meet Semilattices
@@ -111,6 +158,7 @@ class PartialOrd a => Meet a where
   -- | The meet operation of a meet-semilattice.
   --
   meet :: a -> a -> a
+  {-# minimal meet #-}
 
 -- | A infix alias for 'meet'
 --
@@ -124,6 +172,28 @@ infixr 7 /\
 (∧) = meet
 infixr 7 ∧
 
+instance Meet Void where
+  meet = const
+
+instance Meet () where
+  meet _ _ = ()
+
+instance Meet Bool where
+  meet = (&&)
+
+instance (Meet a, Meet b) => Meet (a,b) where
+  meet (a,b) (c,d) = (meet a c, meet b d)
+
+instance Ord a => Meet (Set a) where
+  meet = Set.intersection
+
+instance Meet IntSet where
+  meet = IntSet.intersection
+
+instance Meet a => Meet (Maybe a) where
+  meet = liftA2 meet
+
+
 -- | A bounded meet-semilattice is a meet-semilattice that is bounded,
 -- meaning that it admits a least upper bound (also known as a
 -- top element, supremum), which is a unit for the 'meet' operation.
@@ -133,6 +203,12 @@ infixr 7 ∧
 -- [Two-sided unital element] @a '∧' '⊤' = '⊤' '∧' a = a@
 --
 class (Supremum a, Meet a) => BoundedMeet a where
+
+
+instance BoundedMeet ()
+instance BoundedMeet Bool
+instance (BoundedMeet a, BoundedMeet b) => BoundedMeet (a,b)
+instance BoundedMeet a => BoundedMeet (Maybe a)
 
 -- | An alias for the top element of a 'BoundedMeet' semilattice.
 --
@@ -145,23 +221,13 @@ top = sup
 (⊤) :: BoundedMeet a => a
 (⊤) = top
 
-instance Join Void where
-  join = const
+-- | Newtype wrapper yielding the underlying 'Semigroup'
+-- and 'Monoid' instances for instances of 'Meet'.
+--
+newtype Meets a = Meets { unMeets :: a }
 
-instance Meet Void where
-  meet = const
+instance Meet a => Semigroup (Meets a) where
+  Meets a <> Meets b = Meets (a /\ b)
 
-instance Join () where
-  join _ _ = ()
-
-instance Meet () where
-  meet _ _ = ()
-
-instance BoundedJoin ()
-instance BoundedMeet ()
-
-instance Join Bool where
-  join = (||)
-
-instance Meet Bool where
-  meet = (&&)
+instance BoundedMeet a => Monoid (Meets a) where
+  mempty = Meets top
