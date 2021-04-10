@@ -224,7 +224,7 @@ top = sup
 -- | Newtype wrapper yielding the underlying 'Semigroup'
 -- and 'Monoid' instances for instances of 'Meet'.
 --
-newtype Meets a = Meets { unMeets :: a }
+newtype Meets a = Meets { unMeet :: a }
 
 instance Meet a => Semigroup (Meets a) where
   Meets a <> Meets b = Meets (a /\ b)
