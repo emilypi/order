@@ -77,11 +77,6 @@ class Supremum a where
   default sup :: Bounded a => a
   sup = maxBound
 
-{-
-instance Infimum 
-instance Supremum 
--}
-
 instance Infimum Ordering
 instance Supremum Ordering
 
@@ -91,9 +86,16 @@ instance Supremum Any
 instance Infimum All
 instance Supremum All
 
+#if (MIN_VERSION_base(4,15,0))
 instance Infimum Lifetime
 
 instance Infimum Event
+
+instance Infimum a => Infimum (Solo a) where
+  inf = Solo inf
+instance Supremum a => Supremum (Solo a) where
+  sup = Solo sup
+#endif
 
 instance Infimum [a]
 
@@ -109,11 +111,6 @@ instance Supremum a => Supremum (ST s a) where
 
 deriving newtype instance Infimum a => Infimum (Par1 a)
 deriving newtype instance Supremum a => Supremum (Par1 a)
-
-instance Infimum a => Infimum (Solo a) where
-  inf = Solo inf
-instance Supremum a => Supremum (Solo a) where
-  sup = Solo sup
 
 instance Supremum a => Infimum (Down a) where
   inf = Down sup
