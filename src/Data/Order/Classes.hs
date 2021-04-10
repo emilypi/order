@@ -10,7 +10,7 @@
 {-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE Trustworthy #-}
-module Data.Order.Pre
+module Data.Order.Classes
 ( -- * Preorders
   PreOrd(..)
 , geq

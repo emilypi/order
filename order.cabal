@@ -47,6 +47,7 @@ library
 --    Data.Lattice.Modular
     Data.Semilattice
     Data.Order.Bounded
+    Data.Order.Classes
 --    Data.Order.Direction
 --    Data.Order.Linear
     Data.Order.Partial
