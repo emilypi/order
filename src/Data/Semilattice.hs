@@ -433,3 +433,8 @@ instance (BoundedMeet a, BoundedMeet b) => BoundedMeet (a,b)
 instance (BoundedMeet a, BoundedMeet b, BoundedMeet c) => BoundedMeet (a,b,c)
 instance (BoundedMeet a, BoundedMeet b, BoundedMeet c, BoundedMeet d) => BoundedMeet (a,b,c,d)
 instance (BoundedMeet a, BoundedMeet b, BoundedMeet c, BoundedMeet d, BoundedMeet e) => BoundedMeet (a,b,c,d,e)
+
+instance (BoundedJoin a, BoundedJoin b) => BoundedJoin (a,b)
+instance (BoundedJoin a, BoundedJoin b, BoundedJoin c) => BoundedJoin (a,b,c)
+instance (BoundedJoin a, BoundedJoin b, BoundedJoin c, BoundedJoin d) => BoundedJoin (a,b,c,d)
+instance (BoundedJoin a, BoundedJoin b, BoundedJoin c, BoundedJoin d, BoundedJoin e) => BoundedJoin (a,b,c,d,e)
