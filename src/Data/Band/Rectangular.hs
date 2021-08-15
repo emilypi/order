@@ -14,6 +14,9 @@
 -- This module contains definitions for rectangular 'Band's, the class idempotent semigroups which are nowhere
 -- commutative.
 --
+-- Copyright notice: The following code is copied from the <https://hackage.haskell.org/package/algebra-4.3.1/docs/Numeric-Band-Rectangular.html#t:Rect algebra> package by Edward Kmett ((c) 2011),
+-- and slightly modified to fit the needs of this package.
+--
 module Data.Band.Rectangular
 ( Band(..)
 ) where

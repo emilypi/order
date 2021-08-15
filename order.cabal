@@ -6,7 +6,9 @@ synopsis:        Order-theory
 description:     Order theory for the working Haskell programmer
 bug-reports:     https://github.com/emilypi/order
 license:         BSD-3-Clause
-license-file:    LICENSE
+license-file:
+  LICENSE
+  LICENSE.edkmett
 author:          Emily Pillmore, Siddharth Bhat, davean
 maintainer:      emilypi@cohomolo.gy, siddu.druid@gmail.com, davean@xkcd.com
 copyright:       2020-2021 (c) Emily Pillmore <emilypi@cohomolo.gy>, Siddharth Bhat, davean, 2018 Edward A. Kmett
