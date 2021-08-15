@@ -319,11 +319,13 @@ deriving newtype instance Join Monoid.Any
 instance Meet Monoid.Any where
   meet (Monoid.Any a) (Monoid.Any b) = Monoid.Any (a && b)
 instance BoundedJoin Monoid.Any
+instance BoundedMeet Monoid.Any
 
 deriving newtype instance Join Monoid.All
 instance Meet Monoid.All where
   meet (Monoid.All a) (Monoid.All b) = Monoid.All (a || b)
 instance BoundedJoin Monoid.All
+instance BoundedMeet Monoid.All
 
 #if (MIN_VERSION_base(4,15,0))
 instance Join Lifetime where
