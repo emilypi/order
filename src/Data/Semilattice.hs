@@ -1,4 +1,14 @@
 {-# language Trustworthy #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE DerivingStrategies #-}
+{-# LANGUAGE DefaultSignatures #-}
+{-# LANGUAGE StandaloneDeriving #-}
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveFoldable #-}
+{-# LANGUAGE DeriveTraversable #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DeriveDataTypeable #-}
 -- |
 -- Module       : Data.Semilattice
 -- Copyright    : (c) 2020-2021 Emily Pillmore, Davean Scies
@@ -56,6 +66,7 @@ import           Data.Set
 import           Data.Void
 import           Foreign.Storable
 import           GHC.Generics
+import Data.IntSet
 
 #if (MIN_VERSION_base(4,15,0))
 import GHC.Event
@@ -195,27 +206,6 @@ infixr 7 /\\
 (∧) = meet
 infixr 7 ∧
 
-instance Meet Void where
-  meet = const
-
-instance Meet () where
-  meet _ _ = ()
-
-instance Meet Bool where
-  meet = (&&)
-
-instance (Meet a, Meet b) => Meet (a,b) where
-  meet (a,b) (c,d) = (meet a c, meet b d)
-
-instance Ord a => Meet (Set a) where
-  meet = Set.intersection
-
-instance Meet IntSet where
-  meet = IntSet.intersection
-
-instance Meet a => Meet (Maybe a) where
-  meet = liftA2 meet
-
 -- | A bounded meet-semilattice is a meet-semilattice that is bounded,
 -- meaning that it admits a least upper bound (also known as a
 -- top element, supremum), which is a unit for the 'meet' operation.
@@ -225,12 +215,6 @@ instance Meet a => Meet (Maybe a) where
 -- [Two-sided unital element] @a '∧' '⊤' = '⊤' '∧' a = a@
 --
 class (Supremum a, Meet a) => BoundedMeet a where
-
-
-instance BoundedMeet ()
-instance BoundedMeet Bool
-instance (BoundedMeet a, BoundedMeet b) => BoundedMeet (a,b)
-instance BoundedMeet a => BoundedMeet (Maybe a)
 
 
 -- | An alias for the top element of a 'BoundedMeet' semilattice.
@@ -335,13 +319,11 @@ deriving newtype instance Join Monoid.Any
 instance Meet Monoid.Any where
   meet (Monoid.Any a) (Monoid.Any b) = Monoid.Any (a && b)
 instance BoundedJoin Monoid.Any
-instance BoundedMeet Monoid.Any
 
 deriving newtype instance Join Monoid.All
 instance Meet Monoid.All where
   meet (Monoid.All a) (Monoid.All b) = Monoid.All (a || b)
 instance BoundedJoin Monoid.All
-instance BoundedMeet Monoid.All
 
 #if (MIN_VERSION_base(4,15,0))
 instance Join Lifetime where
@@ -416,11 +398,13 @@ instance Meet a => Meet (Maybe a) where
 
 instance BoundedMeet a => BoundedMeet (Maybe a)
 
+#if (MIN_VERSION_base(4,15,0))
 instance (Join a) => Join (Solo a) where
   join (Solo a1) (Solo a2) = Solo (join a1 a2)
 
 instance (Meet a) => Meet (Solo a) where
   meet (Solo a1) (Solo a2) = Solo (meet a1 a2)
+#endif
 
 instance (Join a, Join b) => Join (a,b) where
   join (a1,b1) (a2,b2) = (join a1 a2, join b1 b2)
