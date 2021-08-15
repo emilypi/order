@@ -1,15 +1,14 @@
-{-# LANGUAGE CPP #-}
-{-# LANGUAGE DefaultSignatures #-}
-{-# LANGUAGE DeriveAnyClass #-}
-{-# LANGUAGE DeriveDataTypeable #-}
-{-# LANGUAGE DeriveFoldable #-}
-{-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE DeriveTraversable #-}
-{-# LANGUAGE DerivingStrategies #-}
-{-# LANGUAGE DerivingVia #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE Trustworthy #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE DerivingStrategies #-}
+{-# LANGUAGE DefaultSignatures #-}
+{-# LANGUAGE StandaloneDeriving #-}
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveFoldable #-}
+{-# LANGUAGE DeriveTraversable #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DeriveDataTypeable #-}
 -- |
 -- Module       : Data.Semilattice
 -- Copyright    : (c) 2020-2021 Emily Pillmore, Davean Scies
@@ -67,6 +66,7 @@ import           Data.Set
 import           Data.Void
 import           Foreign.Storable
 import           GHC.Generics
+import Data.IntSet
 
 #if (MIN_VERSION_base(4,15,0))
 import GHC.Event
@@ -215,6 +215,7 @@ infixr 7 ∧
 -- [Two-sided unital element] @a '∧' '⊤' = '⊤' '∧' a = a@
 --
 class (Supremum a, Meet a) => BoundedMeet a where
+
 
 -- | An alias for the top element of a 'BoundedMeet' semilattice.
 --
@@ -399,11 +400,13 @@ instance Meet a => Meet (Maybe a) where
 
 instance BoundedMeet a => BoundedMeet (Maybe a)
 
+#if (MIN_VERSION_base(4,15,0))
 instance (Join a) => Join (Solo a) where
   join (Solo a1) (Solo a2) = Solo (join a1 a2)
 
 instance (Meet a) => Meet (Solo a) where
   meet (Solo a1) (Solo a2) = Solo (meet a1 a2)
+#endif
 
 instance (Join a, Join b) => Join (a,b) where
   join (a1,b1) (a2,b2) = (join a1 a2, join b1 b2)

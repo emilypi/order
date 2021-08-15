@@ -16,7 +16,7 @@ extra-doc-files:
   CHANGELOG.md
   README.md
 
-tested-with:     GHC ==8.8.4 || ==8.10.3 || ==9.0.1
+tested-with:     GHC ==8.8.4 || ==8.10.4 || ==9.0.1
 
 source-repository head
   type:     git
@@ -47,7 +47,7 @@ library
 --    Data.Lattice.Modular
     Data.Semilattice
     Data.Order.Bounded
---    Data.Order.Direction
+    Data.Order.Directed
 --    Data.Order.Linear
     Data.Order.Partial
     Data.Order.Complete

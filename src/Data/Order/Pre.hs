@@ -10,6 +10,20 @@
 {-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE Trustworthy #-}
+-- |
+-- Module       : Data.Order.Pre
+-- Copyright    : (c) 2020-2021 Emily Pillmore, Davean Scies
+-- License      : BSD-style
+--
+-- Maintainer   : Emily Pillmore <emilypi@cohomolo.gy>,
+--                Davean Scies <davean@xkcd.com>,
+--                Siddharth Bhat <siddu.druid@gmail.com>
+-- Stability    : stable
+-- Portability  : non-portable
+--
+-- This module contains definitions for 'PreOrd', the class
+-- of types that form a preorder.
+--
 module Data.Order.Pre
 ( -- * Preorders
   PreOrd(..)
