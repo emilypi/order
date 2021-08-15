@@ -1,4 +1,4 @@
-{-# language Safe #-}
+{-# language Trustworthy #-}
 -- |
 -- Module       : Data.Semilattice
 -- Copyright    : (c) 2020-2021 Emily Pillmore, Davean Scies
@@ -193,7 +193,6 @@ instance Meet IntSet where
 instance Meet a => Meet (Maybe a) where
   meet = liftA2 meet
 
-
 -- | A bounded meet-semilattice is a meet-semilattice that is bounded,
 -- meaning that it admits a least upper bound (also known as a
 -- top element, supremum), which is a unit for the 'meet' operation.
@@ -209,6 +208,7 @@ instance BoundedMeet ()
 instance BoundedMeet Bool
 instance (BoundedMeet a, BoundedMeet b) => BoundedMeet (a,b)
 instance BoundedMeet a => BoundedMeet (Maybe a)
+
 
 -- | An alias for the top element of a 'BoundedMeet' semilattice.
 --
