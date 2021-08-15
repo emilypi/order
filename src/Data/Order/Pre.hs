@@ -36,13 +36,7 @@ module Data.Order.Pre
 , PreOrd1(..)
 ) where
 
--- We might need to CPP out a lot of these instances (the C/OS related ones specifically).
-
--- Some of these instances need to move to Poset because we have Eq reqirements
--- Maybe this means ParOrd1 is actually only Poset1?
-
 import           Prelude hiding ((<=), (>=))
-import qualified Prelude as P
 
 import           Control.Applicative
 import           Control.Concurrent
@@ -82,7 +76,6 @@ import           Foreign.Ptr
 
 import           GHC.ByteOrder
 import           GHC.Conc
-import           GHC.Event
 import           GHC.Fingerprint.Type
 import           GHC.Generics
 import           GHC.TypeLits
@@ -94,6 +87,11 @@ import           System.IO
 import           System.Posix.Types
 
 import           Type.Reflection
+
+#if (MIN_VERSION_base(4,15,0))
+import GHC.Event
+import GHC.Tuple
+#endif
 
 
 #include "HsBaseConfig.h"
@@ -294,7 +292,6 @@ instance PreOrd ByteOrder
 
 instance PreOrd Unique
 
--- TODO: Consider this, the Eq seems pretty important. Any better definitions?
 instance PreOrd a => PreOrd [a] where
   leq = leq1
 
@@ -306,12 +303,8 @@ instance Integral a => PreOrd (Ratio a)
 instance PreOrd p => PreOrd (Par1 p) where
   leq (Par1 x) (Par1 y) = leq x y
 
--- TODO: as with list
 instance PreOrd a => PreOrd (NonEmpty a) where
   leq = leq1
-
-instance PreOrd a => PreOrd (Down a) where
-  Down a `leq` Down b = b <= a
 
 deriving newtype instance PreOrd a => PreOrd (Monoid.Product a)
 deriving newtype instance PreOrd a => PreOrd (Monoid.Sum a)
@@ -320,7 +313,6 @@ deriving newtype instance PreOrd a => PreOrd (Monoid.Last a)
 deriving newtype instance PreOrd a => PreOrd (Monoid.First a)
 deriving newtype instance PreOrd a => PreOrd (Functor.Identity a)
 deriving newtype instance (Eq a, PreOrd a) => PreOrd (ZipList a)
-deriving newtype instance PreOrd a => PreOrd (Option a)
 deriving newtype instance PreOrd m => PreOrd (WrappedMonoid m)
 deriving newtype instance PreOrd a => PreOrd (Last a)
 deriving newtype instance PreOrd a => PreOrd (First a)
@@ -395,8 +387,6 @@ instance (PreOrd k, Eq v, PreOrd v) => PreOrd (Map.Map k v) where
 
 instance PreOrd IntSet.IntSet
 
--- instance (Eq a, PreOrd a)  => PreOrd (Set.Set a) where
---   leq s1 s2 = leq (toList s1) (toList s2)
 
 instance Ord a => PreOrd (Set.Set a)
 
@@ -559,7 +549,6 @@ instance (PreOrd a, PreOrd b, PreOrd c, PreOrd d, PreOrd e, PreOrd f, PreOrd g, 
     && leq n1 n2
     && leq o1 o2
 
--- TODO: Uh, (==)?
 instance PreOrd1 [] where
   liftLeq _ [] [] = True
   liftLeq _ [] (_:_) = True
@@ -573,6 +562,8 @@ instance PreOrd1 Maybe where
 
 
 #if (MIN_VERSION_base(4,15,0))
+instance PreOrd a => PreOrd (Solo a) where
+  leq (Solo a) (Solo b) = leq a b
 instance PreOrd1 Solo where
   liftLeq cmp (Solo a) (Solo b) = cmp a b
 #endif
@@ -580,8 +571,8 @@ instance PreOrd1 Solo where
 instance PreOrd1 NonEmpty where
   liftLeq cmp (x :| xs) (y :| ys) = cmp x y && liftLeq cmp xs ys
 
--- instance PreOrd1 Down where
---   liftLeq cmp (Down x) (Down y) = cmp y x
+instance PreOrd1 Down where
+  liftLeq cmp (Down x) (Down y) = cmp x y
 
 instance PreOrd a => PreOrd1 ((,) a) where
   liftLeq f (a,b) (a',b') = leq a a' && f b b'

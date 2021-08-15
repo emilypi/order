@@ -15,8 +15,8 @@
 --
 module Data.Lattice
 ( -- * Lattices
-  Lattice(..)
-, BoundedLattice(..)
+  Lattice
+, BoundedLattice
 ) where
 
 

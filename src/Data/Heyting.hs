@@ -22,7 +22,7 @@ module Data.Heyting
 , const
 ) where
 
-import qualified Prelude as P
+import Prelude ()
 
 import Data.Lattice
 import Data.Semilattice
