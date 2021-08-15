@@ -1,12 +1,31 @@
 {-# LANGUAGE TypeFamilies #-}
-module Data.Order.Complete where
+-- |
+-- Module       : Data.Order.Complete
+-- Copyright    : (c) 2020-2021 Emily Pillmore, Davean Scies
+-- License      : BSD-style
+--
+-- Maintainer   : Emily Pillmore <emilypi@cohomolo.gy>,
+--                Davean Scies <davean@xkcd.com>,
+--                Siddharth Bhat <siddu.druid@gmail.com>
+-- Stability    : stable
+-- Portability  : non-portable
+--
+-- This module contains definitions for 'CompletePartialOrd', the class
+-- of types that form a complete partial order.
+--
+module Data.Order.Complete
+( -- * Complete partial orders
+  CompletePartialOrd(..)
+) where
+
+
 import Data.Order.Partial
 
 -- | Davey and Priestly, 2nd edition, Definition 7.7: Directed set:
 -- let S be a non-empty subset of an ordered set P.
 -- Then ∀ x, y ∈ S, ∃z ∈ S, z ∈ x ≤ z ∧ y ≤ z
 
--- | Davey and Priestly, 2nd edition, Definition 8.1: a CPO is an ordered set with a bottom, 
+-- | Davey and Priestly, 2nd edition, Definition 8.1: a CPO is an ordered set with a bottom,
 -- where each directed set has a supremum.
 class PartialOrd a => CompletePartialOrd a where
    -- | conceivably, some types may have better encodings of directed subsets
@@ -26,4 +45,3 @@ class PartialOrd a => CompletePartialOrd a where
 --
 -- @topos: What's a useful encoding of directed sets in the finite/computable
 -- case for us?
-

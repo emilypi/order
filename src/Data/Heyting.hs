@@ -1,6 +1,6 @@
 {-# language Safe #-}
 -- |
--- Module       : Data.Lattice
+-- Module       : Data.Heyting
 -- Copyright    : (c) 2020-2021 Emily Pillmore, Davean Scies
 -- License      : BSD-style
 --

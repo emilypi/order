@@ -1,7 +1,7 @@
-cabal-version:   2.2
+cabal-version:   3.0
 
 name:            order
-version:         0
+version:         0.1.0.0
 synopsis:        Order-theory
 description:     Order theory for the working Haskell programmer
 bug-reports:     https://github.com/emilypi/order
@@ -9,7 +9,7 @@ license:         BSD-3-Clause
 license-file:    LICENSE
 author:          Emily Pillmore, Siddharth Bhat, davean
 maintainer:      emilypi@cohomolo.gy, siddu.druid@gmail.com, davean@xkcd.com
-copyright:       2020 (c) Emily Pillmore <emilypi@cohomolo.gy>, Siddharth Bhat, davean, 2018 Edward A. Kmett
+copyright:       2020-2021 (c) Emily Pillmore <emilypi@cohomolo.gy>, Siddharth Bhat, davean, 2018 Edward A. Kmett
 category:        Order, Algebra, Relational Calculus
 build-type:      Simple
 extra-doc-files:
@@ -41,8 +41,6 @@ library
 --    Data.Frame
     Data.Heyting
     Data.Lattice
---    Data.Lattice.Bounded
---    Data.Lattice.Complete
     Data.Lattice.Distributive
 --    Data.Lattice.Modular
     Data.Semilattice

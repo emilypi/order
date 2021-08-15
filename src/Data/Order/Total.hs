@@ -1,1 +1,15 @@
+-- |
+-- Module       : Data.Order.Total
+-- Copyright    : (c) 2020-2021 Emily Pillmore, Davean Scies
+-- License      : BSD-style
+--
+-- Maintainer   : Emily Pillmore <emilypi@cohomolo.gy>,
+--                Davean Scies <davean@xkcd.com>,
+--                Siddharth Bhat <siddu.druid@gmail.com>
+-- Stability    : stable
+-- Portability  : non-portable
+--
+-- This module contains definitions for 'TotalOrd', the class
+-- of types that have a total ordering.
+--
 module Data.Order.Total where

@@ -25,7 +25,12 @@
 -- greatest lower bounds, and 'Superemum', the class of least
 -- upper bounds.
 --
-module Data.Order.Bounded where
+module Data.Order.Bounded
+( -- * Least upper bounds
+  Supremum(..)
+  -- * Greatest lower bounds
+, Infimum(..)
+)where
 
 import           Control.Applicative
 import           Control.Monad.ST

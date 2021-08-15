@@ -135,11 +135,17 @@ bottom = inf
 --
 newtype Joins a
   = Joins { unJoin :: a }
-  deriving (Read, Show, Eq, Ord)
+  deriving
+    ( Read, Show, Eq, Ord
+    , Functor, Foldable, Traversable
+    , Generic, Generic1, Typeable, Data
+    )
   deriving anyclass (PreOrd, PartialOrd)
-  deriving (Functor, Foldable, Traversable)
-  deriving newtype (Floating, Fractional, Num, Real, RealFloat, RealFrac, Ix, FiniteBits, Bits, Storable, Bounded, Enum)
-  deriving (Generic, Generic1, Data)
+  deriving newtype
+    ( Floating, Fractional, Num, Real, RealFloat, RealFrac
+    , Ix, FiniteBits, Bits
+    , Storable, Bounded, Enum
+    )
 
 instance Join a => Semigroup (Joins a) where
   Joins a <> Joins b = Joins (a \/ b)
@@ -233,11 +239,17 @@ top = sup
 --
 newtype Meets a
   = Meets { unMeet :: a }
-  deriving (Read, Show, Eq, Ord)
+  deriving
+    ( Read, Show, Eq, Ord
+    , Functor, Foldable, Traversable
+    , Generic, Generic1, Typeable, Data
+    )
   deriving anyclass (PreOrd, PartialOrd)
-  deriving (Functor, Foldable, Traversable)
-  deriving newtype (Floating, Fractional, Num, Real, RealFloat, RealFrac, Ix, FiniteBits, Bits, Storable, Bounded, Enum)
-  deriving (Generic, Generic1, Data)
+  deriving newtype
+    ( Floating, Fractional, Num, Real, RealFloat, RealFrac
+    , Ix, FiniteBits, Bits
+    , Storable, Bounded, Enum
+    )
 
 instance Meet a => Semigroup (Meets a) where
   Meets a <> Meets b = Meets (a /\ b)
@@ -269,8 +281,6 @@ instance Read1 Meets where
 
 instance Show1 Meets where
   liftShowsPrec sp _ d (Meets x) = showsUnaryWith sp "Meet" d x
-
-
 
 instance Join Void where
   join = const

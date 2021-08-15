@@ -1,1 +1,15 @@
+-- |
+-- Module       : Data.Order.Well
+-- Copyright    : (c) 2020-2021 Emily Pillmore, Davean Scies
+-- License      : BSD-style
+--
+-- Maintainer   : Emily Pillmore <emilypi@cohomolo.gy>,
+--                Davean Scies <davean@xkcd.com>,
+--                Siddharth Bhat <siddu.druid@gmail.com>
+-- Stability    : stable
+-- Portability  : non-portable
+--
+-- This module contains definitions for 'WellOrd', the class
+-- of types that have a well ordering.
+--
 module Data.Order.Well where

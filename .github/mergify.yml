@@ -1,0 +1,18 @@
+pull_request_rules:
+  - name: Automatically merge pull requests
+    actions:
+      merge:
+        strict: smart+fasttrack
+        method: squash
+    conditions:
+      - label=merge me
+      - '#approved-reviews-by>=1'
+  - name: automatic merge of dependabot
+    actions:
+      merge:
+        strict: smart
+        method: rebase
+        priority: low
+    conditions:
+      - author~=^dependabot(|-preview)\[bot\]$
+      - base=main
