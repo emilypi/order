@@ -34,8 +34,8 @@ library
   import: base
   hs-source-dirs:   src
   exposed-modules:
---    Data.Band
---    Data.Band.Rectangular
+    Data.Band
+    Data.Band.Rectangular
 --    Data.Boolean
 --    Data.Boolean.Generalized
 --    Data.Frame
