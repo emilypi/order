@@ -1,4 +1,4 @@
-{-# language Trustworthy #-}
+{-# LANGUAGE Trustworthy #-}
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE DefaultSignatures #-}
