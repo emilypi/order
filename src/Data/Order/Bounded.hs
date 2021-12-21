@@ -55,7 +55,9 @@ import           GHC.Generics
 import           Numeric.Natural
 
 #if (MIN_VERSION_base(4,15,0))
+#ifndef mingw32_HOST_OS
 import GHC.Event
+#endif
 import GHC.Tuple
 #endif
 
@@ -94,11 +96,13 @@ instance Infimum All
 instance Supremum All
 
 #if (MIN_VERSION_base(4,15,0))
+#ifndef mingw32_HOST_OS
 instance Infimum Lifetime
 instance Supremum Lifetime where
   sup = MultiShot
 
 instance Infimum Event
+#endif
 
 instance Infimum a => Infimum (Solo a) where
   inf = Solo inf

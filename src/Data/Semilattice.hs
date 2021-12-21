@@ -69,7 +69,9 @@ import           GHC.Generics
 import Data.IntSet
 
 #if (MIN_VERSION_base(4,15,0))
+#ifndef mingw32_HOST_OS
 import GHC.Event
+#endif
 import GHC.Tuple
 #endif
 
@@ -338,6 +340,7 @@ instance BoundedJoin Monoid.All
 instance BoundedMeet Monoid.All
 
 #if (MIN_VERSION_base(4,15,0))
+#ifndef mingw32_HOST_OS
 instance Join Lifetime where
   join = (<>)
 instance BoundedJoin Lifetime
@@ -349,6 +352,7 @@ instance BoundedMeet Lifetime
 instance Join Event where
   join = (<>)
 instance BoundedJoin Event
+#endif
 #endif
 
 deriving newtype instance Join a => Join (Par1 a)
