@@ -5,12 +5,23 @@ order
 
 This is a package for exploring order-theory in Haskell.
 
+What This Works On
+------------------
+
+We support (and test in CI) the following major GHC versions:
+
+* 8.8
+* 8.10
+* 9.0
+
+We test on each of Windows, macOS and Linux.
+
 Contact Information
 -------------------
 
 Contributions and bug reports are welcome!
 
-Maintained by Emily Pillmore (@topos). Please feel free to contact me through github or on the #haskell IRC channel on irc.freenode.net.
+Maintained by Emily Pillmore (@topos). Please feel free to contact me through Github or on the #haskell IRC channel on irc.libera.chat.
 
 References
 ----------

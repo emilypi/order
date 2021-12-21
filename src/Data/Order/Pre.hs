@@ -84,12 +84,17 @@ import           Numeric.Natural
 
 import           System.Exit
 import           System.IO
+
+#ifndef mingw32_HOST_OS
 import           System.Posix.Types
+#endif
 
 import           Type.Reflection
 
 #if (MIN_VERSION_base(4,15,0))
+#ifndef mingw32_HOST_OS
 import GHC.Event
+#endif
 import GHC.Tuple
 #endif
 
@@ -244,7 +249,9 @@ instance PreOrd ArrayException
 instance PreOrd AsyncException
 
 #if (MIN_VERSION_base(4,15,0))
+#ifndef mingw32_HOST_OS 
 instance PreOrd TimeoutKey
+#endif
 #endif
 
 instance PreOrd SeekMode
@@ -253,17 +260,21 @@ instance PreOrd Newline
 instance PreOrd BufferMode
 instance PreOrd ExitCode
 
+#ifndef mingw32_HOST_OS 
 instance PreOrd Fd
 
 #if (MIN_VERSION_base(4,14,0))
 instance PreOrd CNfds
 instance PreOrd CSocklen
 #endif
+#endif
 
 #if defined(HTYPE_TIMER_T)
 instance PreOrd CTimer
 #endif
 
+
+#ifndef mingw32_HOST_OS
 instance PreOrd CKey
 instance PreOrd CId
 instance PreOrd CFsFilCnt
@@ -283,6 +294,7 @@ instance PreOrd COff
 instance PreOrd CMode
 instance PreOrd CIno
 instance PreOrd CDev
+#endif
 
 instance PreOrd ThreadStatus
 instance PreOrd BlockReason
