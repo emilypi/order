@@ -18,7 +18,7 @@ extra-doc-files:
   CHANGELOG.md
   README.md
 
-tested-with:     GHC ==8.8.4 || ==8.10.4 || ==9.0.1
+tested-with:     GHC ==8.8.4 || ==8.10.4 || ==9.0.1 || ==9.2.1
 
 source-repository head
   type:     git
@@ -30,7 +30,7 @@ common base
       array      ^>= 0.5
     , base        >=4.10 && <5
     , containers  >=0.5  && <0.7
-    , ghc-prim    >=0.5.1.0 && <0.8
+    , ghc-prim    >=0.5.1.0 && <0.9
 
 library
   import: base

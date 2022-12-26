@@ -13,6 +13,7 @@ We support (and test in CI) the following major GHC versions:
 * 8.8
 * 8.10
 * 9.0
+* 9.2
 
 We test on each of Windows, macOS and Linux.
 
