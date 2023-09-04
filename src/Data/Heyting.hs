@@ -29,7 +29,7 @@ import Data.Semilattice
 
 -- | A @Heyting@ algebra is a 'BoundedLattice' such that for every
 -- pair of elements in the algebra, there exists a unique greatest element
--- @x@ such that @a ∧ x <= b@ holds. We call @x@ the /relative psuedo-complement/
+-- @x@ such that @a ∧ x <= b@ holds. We call @x@ the /relative pseudo-complement/
 -- of @a@ with respect to @b@, and it is denoted @a '→' b@.
 --
 -- Generally, we call @('→')@ /implication/, and say that a @Heyting@
