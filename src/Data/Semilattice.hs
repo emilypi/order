@@ -11,7 +11,7 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 -- |
 -- Module       : Data.Semilattice
--- Copyright    : (c) 2020-2021 Emily Pillmore, Davean Scies
+-- Copyright    : (c) 2020-2023 Emily Pillmore, Davean Scies
 -- License      : BSD-style
 --
 -- Maintainer   : Emily Pillmore <emilypi@cohomolo.gy>,
@@ -68,12 +68,8 @@ import           Foreign.Storable
 import           GHC.Generics
 import Data.IntSet
 
-#if (MIN_VERSION_base(4,15,0))
-#ifndef mingw32_HOST_OS
 import GHC.Event
-#endif
 import GHC.Tuple
-#endif
 
 -- -------------------------------------------------------------------- --
 -- Join Semilattices
@@ -414,13 +410,11 @@ instance Meet a => Meet (Maybe a) where
 
 instance BoundedMeet a => BoundedMeet (Maybe a)
 
-#if (MIN_VERSION_base(4,15,0))
 instance (Join a) => Join (Solo a) where
-  join (Solo a1) (Solo a2) = Solo (join a1 a2)
+  join (MkSolo a1) (MkSolo a2) = MkSolo (join a1 a2)
 
 instance (Meet a) => Meet (Solo a) where
-  meet (Solo a1) (Solo a2) = Solo (meet a1 a2)
-#endif
+  meet (MkSolo a1) (MkSolo a2) = MkSolo (meet a1 a2)
 
 instance (Join a, Join b) => Join (a,b) where
   join (a1,b1) (a2,b2) = (join a1 a2, join b1 b2)

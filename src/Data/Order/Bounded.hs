@@ -4,20 +4,18 @@
 {-# LANGUAGE DerivingVia #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE KindSignatures #-}
-{-# LANGUAGE MultiWayIf #-}
 {-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE Trustworthy #-}
 -- |
 -- Module       : Data.Order.Bounded
--- Copyright    : (c) 2020-2021 Emily Pillmore, Davean Scies
+-- Copyright    : (c) 2020-2023 Emily Pillmore, Davean Scies
 -- License      : BSD-style
 --
 -- Maintainer   : Emily Pillmore <emilypi@cohomolo.gy>,
 --                Davean Scies <davean@xkcd.com>,
---                Siddharth Bhat <siddu.druid@gmail.com>
+--
 -- Stability    : stable
 -- Portability  : non-portable
 --
@@ -54,15 +52,10 @@ import           GHC.Generics
 
 import           Numeric.Natural
 
-#if (MIN_VERSION_base(4,15,0))
-#ifndef mingw32_HOST_OS
 import GHC.Event
-#endif
 import GHC.Tuple
-#endif
 
 
-#include "HsBaseConfig.h"
 
 -- | Infimum, also known as a "greatest lower bound", represents
 -- the largest element of an ordered set that is also smaller than
@@ -95,20 +88,17 @@ instance Supremum Any
 instance Infimum All
 instance Supremum All
 
-#if (MIN_VERSION_base(4,15,0))
-#ifndef mingw32_HOST_OS
+
 instance Infimum Lifetime
 instance Supremum Lifetime where
   sup = MultiShot
 
 instance Infimum Event
-#endif
 
 instance Infimum a => Infimum (Solo a) where
-  inf = Solo inf
+  inf = MkSolo inf
 instance Supremum a => Supremum (Solo a) where
-  sup = Solo sup
-#endif
+  sup = MkSolo sup
 
 instance Infimum [a]
 

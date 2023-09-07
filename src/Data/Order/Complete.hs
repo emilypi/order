@@ -1,7 +1,7 @@
 {-# LANGUAGE TypeFamilies #-}
 -- |
 -- Module       : Data.Order.Complete
--- Copyright    : (c) 2020-2021 Emily Pillmore, Davean Scies
+-- Copyright    : (c) 2020-2023 Emily Pillmore, Davean Scies
 -- License      : BSD-style
 --
 -- Maintainer   : Emily Pillmore <emilypi@cohomolo.gy>,

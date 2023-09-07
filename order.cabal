@@ -1,4 +1,4 @@
-cabal-version:   3.0
+cabal-version:   3.4
 
 name:            order
 version:         0.1.0.0
@@ -10,15 +10,20 @@ license-file:
   LICENSE
   LICENSE.edkmett
 author:          Emily Pillmore, Siddharth Bhat, davean
-maintainer:      emilypi@cohomolo.gy, siddu.druid@gmail.com, davean@xkcd.com
-copyright:       2020-2021 (c) Emily Pillmore <emilypi@cohomolo.gy>, Siddharth Bhat, davean, 2018 Edward A. Kmett
+maintainer:      emilypi@cohomolo.gy, davean@xkcd.com
+copyright:       2020-2023 (c) Emily Pillmore <emilypi@cohomolo.gy>, Siddharth Bhat, davean, 2018 Edward A. Kmett
 category:        Order, Algebra, Relational Calculus
 build-type:      Simple
 extra-doc-files:
   CHANGELOG.md
   README.md
 
-tested-with:     GHC ==8.8.4 || ==8.10.4 || ==9.0.1 || ==9.2.1
+tested-with:
+  GHC ==8.10.7
+   || ==9.0.2
+   || ==9.2.8
+   || ==9.4.7
+   || ==9.6.2
 
 source-repository head
   type:     git
@@ -30,7 +35,7 @@ common base
       array      ^>= 0.5
     , base        >=4.10 && <5
     , containers  >=0.5  && <0.7
-    , ghc-prim    >=0.5.1.0 && <0.9
+    , ghc-prim    >=0.5.1.0 && <0.11
 
 library
   import: base
