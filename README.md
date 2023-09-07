@@ -1,7 +1,7 @@
 order
 ==========
 
-[![Hackage](https://img.shields.io/hackage/v/order.svg)](https://hackage.haskell.org/package/order) ![Build Status](https://github.com/emilypi/order/workflows/Haskell-CI/badge.svg)
+[![Hackage](https://img.shields.io/hackage/v/order.svg)](https://hackage.haskell.org/package/order) ![Build Status](https://github.com/emilypi/order/actions/workflows/haskell-ci.yml/badge.svg)
 
 This is a package for exploring order-theory in Haskell.
 
@@ -10,12 +10,13 @@ What This Works On
 
 We support (and test in CI) the following major GHC versions:
 
-* 8.8
 * 8.10
 * 9.0
 * 9.2
+* 9.4
+* 9.6
 
-We test on each of Windows, macOS and Linux.
+We test on macOS and Linux.
 
 Contact Information
 -------------------

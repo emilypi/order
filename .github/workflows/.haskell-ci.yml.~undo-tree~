@@ -1,5 +1,5 @@
 (undo-tree-save-format-version . 1)
-"c13a259dadce3a6ccd3dc37e696ea710d0a0147b"
+"a6b1b236ecfbd1ad5764d6da602969eb5c26d811"
 [nil nil nil nil (25850 3935 952960 0) 0 nil]
 ([nil nil (("8" . -333) (undo-tree-id35 . -1) (undo-tree-id36 . -1) (undo-tree-id37 . -1) 334 (t 25850 3432 17658 351000)) nil (25850 3935 952959 0) 0 nil])
 ([nil nil ((333 . 335)) nil (25850 3935 952956 0) 0 nil])
@@ -7,5 +7,97 @@
 ([nil nil ((350 . 357)) nil (25850 3935 952949 0) 0 nil])
 ([nil nil ((357 . 363)) nil (25850 3935 952948 0) 0 nil])
 ([nil nil (("4" . -362) (undo-tree-id0 . -1) (undo-tree-id1 . -1) (undo-tree-id2 . -1) (undo-tree-id3 . -1) (undo-tree-id4 . -1) (undo-tree-id5 . -1) (undo-tree-id6 . -1) (undo-tree-id7 . -1) (undo-tree-id8 . -1) (undo-tree-id9 . -1) (undo-tree-id10 . -1) (undo-tree-id11 . -1) (undo-tree-id12 . -1) (undo-tree-id13 . -1) (undo-tree-id14 . -1) (undo-tree-id15 . -1) (undo-tree-id16 . -1) (undo-tree-id17 . -1) (undo-tree-id18 . -1) (undo-tree-id19 . -1) (undo-tree-id20 . -1) (undo-tree-id21 . -1) (undo-tree-id22 . -1) (undo-tree-id23 . -1) (undo-tree-id24 . -1) (undo-tree-id25 . -1) (undo-tree-id26 . -1) 363) nil (25850 3935 952946 0) 0 nil])
-([nil current ((362 . 364)) nil (25850 3935 952920 0) 0 nil])
+([nil nil ((362 . 364)) nil (25850 3935 952920 0) 0 nil])
+([nil nil ((1 . 2058) (t 25850 3935 954417 485000)) nil (25850 4275 454414 0) 0 nil])
+([nil nil (("name: CI" . 2058)) nil (25850 4275 454413 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454412 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454412 0) 0 nil])
+([nil nil (("# Trigger the workflow on push or pull request, but only for the main branch" . 2058)) nil (25850 4275 454411 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454411 0) 0 nil])
+([nil nil (("on:" . 2058)) nil (25850 4275 454410 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454409 0) 0 nil])
+([nil nil (("  pull_request:" . 2058)) nil (25850 4275 454409 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454408 0) 0 nil])
+([nil nil (("  push:" . 2058)) nil (25850 4275 454408 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454407 0) 0 nil])
+([nil nil (("    branches: [\"main\"]" . 2058)) nil (25850 4275 454406 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454406 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454405 0) 0 nil])
+([nil nil (("jobs:" . 2058)) nil (25850 4275 454405 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454404 0) 0 nil])
+([nil nil (("  ci:" . 2058)) nil (25850 4275 454403 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454403 0) 0 nil])
+([nil nil (("    name: ${{ matrix.ghc }} on ${{ matrix.os }}" . 2058)) nil (25850 4275 454402 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454402 0) 0 nil])
+([nil nil (("    runs-on: ${{ matrix.os }}" . 2058)) nil (25850 4275 454401 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454400 0) 0 nil])
+([nil nil (("    strategy:" . 2058)) nil (25850 4275 454400 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454399 0) 0 nil])
+([nil nil (("      matrix:" . 2058) (undo-tree-id44 . -13) (undo-tree-id45 . -13)) nil (25850 4275 454399 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454397 0) 0 nil])
+([nil nil (("        os: [ubuntu-latest, macos-latest, windows-latest]" . 2058)) nil (25850 4275 454396 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454396 0) 0 nil])
+([nil nil (("        ghc: ['8.10', '9.0', '9.2', '9.4', '9.6']" . 2058) (undo-tree-id42 . -17) (undo-tree-id43 . -17)) nil (25850 4275 454395 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454394 0) 0 nil])
+([nil nil (("    steps:" . 2058)) nil (25850 4275 454393 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454392 0) 0 nil])
+([nil nil (("      - name: Checkout base repo" . 2058)) nil (25850 4275 454392 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454391 0) 0 nil])
+([nil nil (("        uses: actions/checkout@v3.1.0" . 2058)) nil (25850 4275 454390 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454390 0) 0 nil])
+([nil nil (("      - name: Set up Haskell" . 2058)) nil (25850 4275 454389 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454388 0) 0 nil])
+([nil nil (("        id: setup-haskell" . 2058) (undo-tree-id38 . -25) (undo-tree-id39 . -25) (undo-tree-id40 . -25) (undo-tree-id41 . -25)) nil (25850 4275 454387 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454379 0) 0 nil])
+([nil nil (("        uses: haskell/actions/setup@v2" . 2058)) nil (25850 4275 454378 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454378 0) 0 nil])
+([nil nil (("        with:" . 2058)) nil (25850 4275 454377 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454377 0) 0 nil])
+([nil nil (("          ghc-version: ${{ matrix.ghc }}" . 2058)) nil (25850 4275 454376 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454375 0) 0 nil])
+([nil nil (("          cabal-version: 'latest'" . 2058)) nil (25850 4275 454375 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454374 0) 0 nil])
+([nil nil (("      - name: Configure" . 2058)) nil (25850 4275 454373 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454372 0) 0 nil])
+([nil nil (("        run: cabal new-configure --enable-tests" . 2058)) nil (25850 4275 454371 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454371 0) 0 nil])
+([nil nil (("      - name: Freeze" . 2058)) nil (25850 4275 454370 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454369 0) 0 nil])
+([nil nil (("        run: cabal freeze" . 2058)) nil (25850 4275 454369 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454368 0) 0 nil])
+([nil nil (("      - name: Cache" . 2058)) nil (25850 4275 454367 0) 0 nil])
+([nil nil (("
+" . 2058)) nil (25850 4275 454366 0) 0 nil])
+([nil nil (("        uses: actions/cache@v3.2.1" . 2058)) nil (25850 4275 454360 0) 0 nil])
+([nil current (("nonempty-vector" . -1392) (1407 . 1412) ("nonempty-vector" . -1309) (1324 . 1329) ("nonempty-vector" . -1133) (1148 . 1153) ("nonempty-vector" . -1104) (1119 . 1124) ("nonempty-vector" . -1078) (t 25850 4275 456113 134000) (1093 . 1098) 13 (t 25850 4275 456113 134000)) nil (25850 4290 387242 0) 0 nil])
+([nil nil (("-" . -1314) (undo-tree-id46 . -1) (undo-tree-id47 . -1) (undo-tree-id48 . -1) (undo-tree-id49 . -1) (undo-tree-id50 . -1) (undo-tree-id51 . -1) (undo-tree-id52 . -1) (undo-tree-id53 . -1) (undo-tree-id54 . -1) (undo-tree-id55 . -1) (undo-tree-id56 . -1) (undo-tree-id57 . -1) (undo-tree-id58 . -1) (undo-tree-id59 . -1) (undo-tree-id60 . -1) (undo-tree-id61 . -1) (undo-tree-id62 . -1) (undo-tree-id63 . -1) (undo-tree-id64 . -1) (undo-tree-id65 . -1) (undo-tree-id66 . -1) (undo-tree-id67 . -1) (undo-tree-id68 . -1) (undo-tree-id69 . -1) (undo-tree-id70 . -1) (undo-tree-id71 . -1) (undo-tree-id72 . -1) 1315 (t 25850 4284 398968 711000)) ((1314 . 1315) (t 25850 4288 933725 216000)) (25850 4288 932196 0) 0 nil])
 nil
