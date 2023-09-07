@@ -85,21 +85,12 @@ import           Numeric.Natural
 import           System.Exit
 import           System.IO
 
-#ifndef mingw32_HOST_OS
 import           System.Posix.Types
-#endif
 
 import           Type.Reflection
 
-#if (MIN_VERSION_base(4,15,0))
-#ifndef mingw32_HOST_OS
 import GHC.Event
-#endif
 import GHC.Tuple
-#endif
-
-
-#include "HsBaseConfig.h"
 
 
 -- | A preordered set (aka a /proset/) is a set with an ordering
@@ -248,33 +239,21 @@ instance PreOrd ErrorCall
 instance PreOrd ArrayException
 instance PreOrd AsyncException
 
-#if (MIN_VERSION_base(4,15,0))
-#ifndef mingw32_HOST_OS 
 instance PreOrd TimeoutKey
-#endif
-#endif
 
 instance PreOrd SeekMode
 instance PreOrd NewlineMode
 instance PreOrd Newline
 instance PreOrd BufferMode
 instance PreOrd ExitCode
-
-#ifndef mingw32_HOST_OS 
 instance PreOrd Fd
-
-#if (MIN_VERSION_base(4,14,0))
 instance PreOrd CNfds
 instance PreOrd CSocklen
-#endif
-#endif
 
 #if defined(HTYPE_TIMER_T)
 instance PreOrd CTimer
 #endif
 
-
-#ifndef mingw32_HOST_OS
 instance PreOrd CKey
 instance PreOrd CId
 instance PreOrd CFsFilCnt
@@ -294,7 +273,6 @@ instance PreOrd COff
 instance PreOrd CMode
 instance PreOrd CIno
 instance PreOrd CDev
-#endif
 
 instance PreOrd ThreadStatus
 instance PreOrd BlockReason
@@ -573,12 +551,10 @@ instance PreOrd1 Maybe where
   liftLeq f (Just x) (Just y) = f x y
 
 
-#if (MIN_VERSION_base(4,15,0))
 instance PreOrd a => PreOrd (Solo a) where
-  leq (Solo a) (Solo b) = leq a b
+  leq (MkSolo a) (MkSolo b) = leq a b
 instance PreOrd1 Solo where
-  liftLeq cmp (Solo a) (Solo b) = cmp a b
-#endif
+  liftLeq cmp (MkSolo a) (MkSolo b) = cmp a b
 
 instance PreOrd1 NonEmpty where
   liftLeq cmp (x :| xs) (y :| ys) = cmp x y && liftLeq cmp xs ys

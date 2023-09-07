@@ -196,6 +196,8 @@ class Meet a where
   -- | The meet operation of a meet-semilattice.
   --
   meet :: a -> a -> a
+  default meet :: Semigroup a => a -> a -> a
+  meet = (<>)
   {-# minimal meet #-}
 
 -- | A infix alias for 'meet'
